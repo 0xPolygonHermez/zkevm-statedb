@@ -1,0 +1,19 @@
+// Service status entity
+syntax = "proto3";
+
+package statedb.v1;
+
+
+
+message ServiceStatus {
+    // enum with the possible status of the server
+    enum Status {
+        STATUS_UNSPECIFIED = 0; // unknown status
+        STATUS_BOOTING = 1; // server is booting
+        STATUS_READY = 2; // server is ready
+        STATUS_ERROR = 3; // server is in error
+    }
+    Status status = 1; // Status of the server 
+    string proto_version = 2;  // Version of the proto supported by server (ex: v0.0.1)
+    string server_id = 3;  // Id of the server <name@version> (ex: servername@v0.4.0)
+}

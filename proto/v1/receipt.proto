@@ -1,0 +1,57 @@
+// Messages related to Receipt entity
+syntax = "proto3";
+
+package statedb.v1;
+
+import "common.proto";
+import "log.proto";
+
+message ReceiptInclusion{
+    //Hash32 block_hash = 1;
+    uint64 block_num = 2;
+    //Hash32 tx_hash = 3;
+    uint64 tx_index = 4;
+}
+
+message ReceiptData { 
+    uint32 type = 1;
+    bytes post_state = 2; 
+    uint32 status = 3;
+    uint64 cumulative_gas_used = 4;
+    uint64 gas_used = 5;
+    Address contract_address = 6;
+    uint64 effective_gas_price = 7;
+      
+    
+    // Need the ReceiptInclusion?
+
+}
+
+message Receipt{
+    ReceiptInclusion inclusion = 1;
+    ReceiptData data = 2;
+}
+
+
+/* Example of Recepit in JSON
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "root": "0xffa3fb9d4e39362e838054d40c8e8783aa363a75deb7992d0c17a1be7b65993c",
+        "cumulativeGasUsed": "0xda27",
+        "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "logs": [],
+        "status": "0x0",
+        "transactionHash": "0x9de522cc75accebb5c491292a4437c20f0ff5ed77a199fe024a8b6ade0189311",
+        "transactionIndex": "0x0",
+        "blockHash": "0x0a1c704c9e1110ea64e579cd153d409de8a0de498cb6a0bb2ef49698b2a6e8a0",
+        "blockNumber": "0x45a78e",
+        "gasUsed": "0xda27",
+        "from": "0x4ca25c4e560fb5adc3ff43eb0ad82ee0cd84aace",
+        "to": "0x2a3dd3eb832af982ec71669e178424b10dca2ede",
+        "contractAddress": null,
+        "type": "0x0"
+    }
+}
+*/

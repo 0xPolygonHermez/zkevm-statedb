@@ -1,0 +1,57 @@
+// Messages related to Block entity
+syntax = "proto3";
+
+package statedb.v1;
+
+import public "common.proto";
+import "google/protobuf/timestamp.proto";
+import public "receipt.proto";
+import public "transaction.proto";
+
+
+// Block
+message Block{
+    BlockHeader header = 1;
+    repeated BlockHeader uncle_headers = 2;
+    repeated Transaction transactions = 3;
+    //repeated Withdrawals withdrawals = 4; // We dont use this
+    
+}
+
+message BlockHeader{
+    Hash32 parent_hash = 1;
+    Hash32 uncle_hash = 2;
+    Address coinbase_address = 3;
+    Hash32 state_root = 4;
+    // Hash32 tx_hash = 5; // is calculated by the client (transactions)
+    // Hash32 receipt_hash = 6; // is calculated by the client (receipts)
+    // string log_bloom = 7; // it can be generated using the receipts + logs (go-ethereum CreateBloom))
+    // BigInt difficulty = 8; // unused field
+    BigInt block_number = 9;
+    uint64 gas_limit = 10;
+    uint64 gas_used = 11;
+    google.protobuf.Timestamp timestamp = 12;
+    bytes extra_data = 13;
+    // Hash32 mix_digest_hash = 14; // Always zero. This is the field MixDigest from geth 
+    // Nonce block_nonce = 15; // Always zero
+    //optional Hash32 withdrawals_hash =16; // WithdrawalsHash was added by EIP-4895 and is ignored in legacy headers.
+    //optional uint64 blob_gas_used = 17; // BlobGasUsed was added by EIP-4895 and is ignored in legacy headers.
+    // optional Hash32 parent_beacon_root = 18; // was added by EIP-4788 and is ignored in legacy headers.
+
+    int64 bacth_number = 19;
+    Hash32 global_exit_root = 20;
+    Hash32 local_exit_root = 21; // ??? it's needed by RPC?? 
+    Hash32 acc_input_hash   = 22;
+    // bool forced_batch = 23;
+    // ??? batch_resources -> moved to transaction level
+    
+
+    google.protobuf.Timestamp received_at = 24; // This is for internal use, to known when we received the block
+}
+
+message Withdrawals{
+    uint64 index = 1; // monotonically increasing identifier issued by consensus layer
+    uint64 validator  = 2; // index of validator associated with withdrawal
+    Address account = 3; // target address for withdrawn ether
+    uint64 amount_gwei = 4; // value of withdrawal in Gwei
+}

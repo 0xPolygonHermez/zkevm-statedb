@@ -1,0 +1,107 @@
+// Definition of read functions for the state db
+syntax = "proto3";
+
+package statedb.v1;
+
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb";
+
+import public "block.proto";
+import public "common.proto";
+import "google/protobuf/empty.proto";
+import public "service_status.proto";
+import public "transaction.proto";
+
+message Version {
+    string v0_0_1 = 1;    
+}
+service StateDbServiceQueriesService {
+    // GetStatus returns the status of the server
+    rpc GetStatus(google.protobuf.Empty) returns (GetStatusResponse) {}
+}
+
+// StateDbBlockQueriesService is the service that provides the block queries to the state db
+service StateDbBlockQueriesService {
+    // ?? it's needed? you could ask GetBlockByNumber without number and get the last block
+    rpc GetLastBlockNumber(google.protobuf.Empty) returns (GetLastBlockNumberResponse) {}
+    // GetBlockByHash returns the block with hash transactions, to get the transactions call GetTransactionsByXXXX
+    rpc GetBlockByHash(GetBlockByHashRequest) returns (GetBlockResponse) {}
+    // GetBlockByNumber returns the block with hash transactions, to get the transactions call GetTransactionsByXXXX
+    rpc GetBlockByNumber(GetBlockByNumberRequest) returns (GetBlockResponse) {}
+}
+
+// StateDbTransactionQueriesService is the service that provides the transactions, receipts and logs queries to the state db
+service StateDbTransactionQueriesService {
+    // GetTransactionsByBlock returns the transactions of a block
+    rpc GetTransactionsByBlockNumber(GetTransactionsByBlockNumberRequest) returns (GetTransactionsResponse) {}
+    rpc GetTransactionsByBlockHash(GetTransactionsByBlockHashRequest) returns (GetTransactionsResponse) {}
+}
+
+service StateDbAccountQueriesService {
+    rpc GetBalance(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc GetNonce(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc GetCode(GetCodeRequest) returns (GetCodeResponse) {}
+    rpc GetStorageAt(GetStorageAtRequest) returns (GetStorageAtResponse) {}
+}
+
+// GetStatus
+message GetStatusRequest {
+}
+
+// GetStatusResponse response for a GetStatus request
+message GetStatusResponse {
+    ServiceStatus status = 1; // Status of the service
+}
+
+// GetTransactionByBlockRequest request for a GetTransactionByBlock request
+message GetTransactionsByBlockNumberRequest {
+    uint64 block_number = 1; // Block number requested
+    bool include_receipts = 2; // Include receipts in the response
+    bool include_logs   = 3; // Include logs in the response
+}
+
+message GetTransactionsByBlockHashRequest {
+    Hash32 hash = 1;  // Block number requested
+    bool include_receipts = 2; // Include receipts in the response
+    bool include_logs   = 3; // Include logs in the response
+}
+
+
+// GetTransactionResponse response for a GetTransactionXXXX request
+message GetTransactionsResponse {
+    repeated Transaction transactions = 1; // list of transactions 
+}
+
+message GetBlockByHashRequest {
+    Hash32 hash = 1;  // Block hash requested
+}
+
+message GetBlockByNumberRequest {
+    optional uint64 block_number = 1; // Block number requested, if not set is the last block
+}
+
+message GetLastBlockNumberResponse {
+    uint64 block_number = 1; // Last block number 
+}
+
+message GetBlockResponse {
+    Block block = 1;
+}
+
+message GetCodeRequest {
+    Address address = 1;
+    uint64 block_number = 2;
+}
+
+message GetCodeResponse {
+    bytes code = 1;
+}
+
+message GetStorageAtRequest{
+    Address address = 1;
+    BigInt position  = 2;
+    uint64 block_number = 3;
+}
+
+message GetStorageAtResponse{
+    BigInt value = 1; // ??? Is a bigint or bytes?? 
+}
