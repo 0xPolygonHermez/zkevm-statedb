@@ -6,14 +6,7 @@ package statedb.v1;
 import "common.proto";
 import "log.proto";
 
-message ReceiptInclusion{
-    //Hash32 block_hash = 1;
-    uint64 block_num = 2;
-    //Hash32 tx_hash = 3;
-    uint64 tx_index = 4;
-}
-
-message ReceiptData { 
+message Receipt { 
     uint32 type = 1;
     bytes post_state = 2; 
     uint32 status = 3;
@@ -21,16 +14,9 @@ message ReceiptData {
     uint64 gas_used = 5;
     Address contract_address = 6;
     uint64 effective_gas_price = 7;
-      
-    
-    // Need the ReceiptInclusion?
-
 }
 
-message Receipt{
-    ReceiptInclusion inclusion = 1;
-    ReceiptData data = 2;
-}
+
 
 
 /* Example of Recepit in JSON

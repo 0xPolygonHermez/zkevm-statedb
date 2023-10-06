@@ -6,10 +6,11 @@ package statedb.v1;
 import "common.proto";
 
 message Log {
-    // Hash32 tx_hash = 1; // tx that owns this log
+    Hash32 tx_hash = 1; // tx that owns this log
+    // ???? L2_block 
     int64 log_index = 2;
     Address contract_address = 3;
     bytes data = 4;
     
-    repeated Hash32 topics = 5; // ??? maximum 4 topics? this field is topic1, topic2, topic3 and topic4 in current stateDB??
+    repeated Hash32 topics = 5; // ??? maximum 4 topics? databse contains topic1, topic2, topic3 and topic4
 }

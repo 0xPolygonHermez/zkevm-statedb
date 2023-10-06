@@ -32,5 +32,5 @@ message Hash32 { // is a binary hash
 }
 
 message Nonce {
-    bytes nonce = 1; // len = 8
+    uint64 nonce = 1; // len = 8 (????? could be bigger)
 }

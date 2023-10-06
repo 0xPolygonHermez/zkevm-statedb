@@ -6,9 +6,9 @@ This document have the functions on JSON-RPC and the call use to fulfill in new 
 |                                         |                       |
 | BLOCKS                                  |                       |
 | eth_getBlockByHash                      | GetBlockByHash        |
-| eth_getBlockByNumber                    | GetLastBlockNumber    |
+| eth_getBlockByNumber                    | GetBlockNumber        |
 | eth_getBlockTransactionCountByHash      | GetBlockByHash        |
-| eth_getBlockTransactionCountByNumber    | GetLastBlockNumber    |
+| eth_getBlockTransactionCountByNumber    | GetBlockByNumber      |
 | eth_getUncleByBlockHashAndIndex         | empty                 |
 | eth_getUncleByBlockNumberAndIndex       | 0                     |
 | eth_getUncleCountByBlockHash            | 0                     |
@@ -17,7 +17,7 @@ This document have the functions on JSON-RPC and the call use to fulfill in new 
 | eth_getTransactionByBlockHashAndIndex   | GetTransactionByBlock |
 | eth_getTransactionByBlockNumberAndIndex |                       |
 | eth_getTransactionByHash                |                       |
-| eth_getTransactionCount                 |                       |
+
 
 
 
@@ -28,24 +28,25 @@ This document have the functions on JSON-RPC and the call use to fulfill in new 
 |                           |                   |
 | LOGS                      |                   |
 | eth_getLogs               | GetTransactionXXX |
-| eth_getFilterLogs         |                   |
-| eth_getFilterChanges      |                   |
+| eth_getFilterLogs         | ???               |
+| eth_getFilterChanges      | ???               |
 |                           |                   |
 | ACCOUNTS                  |                   |
-| eth_getBalance            |                   |
-| eth_getCode               |                   |
-| eth_getStorageAt          |                   |
+| eth_getBalance            | getBalance        |
+| eth_getTransactionCount   | getNonce          |
+| eth_getCode               | getCode           |
+| eth_getStorageAt          | getSorageAt       |
 |                           |                   |
 |                           |                   |
-| WRITE ACTIONS             |                   |
+| EXECUTOR RELATED          |                   |
 | eth_estimateGas           | ???               |
-| eth_sendRawTransaction    |                   |
+| eth_sendRawTransaction    | ???               |
 |                           |                   |
 |                           |                   |
 |                           |                   |
 | NETWORK                   |                   |
-| eth_chainId               | ???               |
-| eth_gasPrice              |                   |
+| eth_chainId               | SMC               |
+| eth_gasPrice              | N/A               |
 
 eth_newBlockFilter
 eth_newFilter

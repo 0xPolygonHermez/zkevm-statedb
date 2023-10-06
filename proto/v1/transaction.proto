@@ -10,15 +10,15 @@ import public "log.proto";
 message Transaction {
     // Hash32 tx_hash = 1;  Calculated by hash of encoded
     
-    uint64 l2_block_number = 2;
-    uint64 l2_block_hash = 3;
-    uint64 tx_index = 4;
-    bytes encoded = 5;
+    uint64 block_number = 2; // l2_block number
+    uint64 block_hash = 3; // l2_block hash
+    uint64 tx_index = 4; // tx index in the block (starting from 0)
+    bytes encoded = 5; // encoded transaction
     uint32 effective_percentage = 6;
     Address from  = 7; //??? it could be obtained by r,s,v... it's worth to have here?
     optional Receipt receipt = 8; // if the request ask for receipt is set
     bool log_included = 9; // if the request ask for log is set
-    repeated Log logs = 10; // how to known if no log or not included?
+    repeated Log logs = 10; // how to known if no log or not included? -> log_included
     
     // ??? need block_num
 }

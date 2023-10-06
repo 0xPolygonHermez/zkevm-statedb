@@ -29,23 +29,28 @@ service StateDbBlockQueriesService {
     rpc GetBlockByNumber(GetBlockByNumberRequest) returns (GetBlockResponse) {}
 }
 
-// StateDbTransactionQueriesService is the service that provides the transactions, receipts and logs queries to the state db
+// StateDbTransactionQueriesService is the service that provides the transactions, 
+//    receipts and logs queries to the state db
 service StateDbTransactionQueriesService {
-    // GetTransactionsByBlock returns the transactions of a block
+    // GetTransactionsByBlockNumber returns the transactions of a block could include receipts and logs
     rpc GetTransactionsByBlockNumber(GetTransactionsByBlockNumberRequest) returns (GetTransactionsResponse) {}
+    // GetTransactionsByBlockHash returns the transactions of a block could include receipts and logs
     rpc GetTransactionsByBlockHash(GetTransactionsByBlockHashRequest) returns (GetTransactionsResponse) {}
 }
 
+// StateDbAccountQueriesService is the service that provides the account queries to the state db
 service StateDbAccountQueriesService {
-    rpc GetBalance(google.protobuf.Empty) returns (google.protobuf.Empty) {}
-    rpc GetNonce(google.protobuf.Empty) returns (google.protobuf.Empty) {}
-    rpc GetCode(GetCodeRequest) returns (GetCodeResponse) {}
+    // GetBlanace returns the balance, it could from lastest or specific block
+    rpc GetBalance(AccountId) returns (GetBalanceResponse) {}
+    // GetNonce returns the nonce, it could from lastest or specific block
+    rpc GetNonce(AccountId) returns (BigInt) {}
+    // GetCode returns the code of the account, it could from lastest or specific block
+    rpc GetCode(AccountId) returns (GetCodeResponse) {}
+    // GetStorageAt returns the value of the storage at position, it could from lastest or specific block
     rpc GetStorageAt(GetStorageAtRequest) returns (GetStorageAtResponse) {}
 }
 
-// GetStatus
-message GetStatusRequest {
-}
+
 
 // GetStatusResponse response for a GetStatus request
 message GetStatusResponse {
@@ -87,9 +92,10 @@ message GetBlockResponse {
     Block block = 1;
 }
 
-message GetCodeRequest {
+// ??? accountId is a bad name! improve it!
+message AccountId{
     Address address = 1;
-    uint64 block_number = 2;
+    optional uint64 block_number = 2; // If not set is the last one
 }
 
 message GetCodeResponse {
@@ -97,9 +103,8 @@ message GetCodeResponse {
 }
 
 message GetStorageAtRequest{
-    Address address = 1;
+    AccountId address = 1;
     BigInt position  = 2;
-    uint64 block_number = 3;
 }
 
 message GetStorageAtResponse{

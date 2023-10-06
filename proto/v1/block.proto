@@ -12,19 +12,20 @@ import public "transaction.proto";
 // Block
 message Block{
     BlockHeader header = 1;
-    repeated BlockHeader uncle_headers = 2;
-    repeated Transaction transactions = 3;
+    //repeated BlockHeader uncle_headers = 2; // ??? there are uncles??
+    repeated Hash32 transaction_hashes = 3;
+    //optional repeated Transaction transactions = 3;
     //repeated Withdrawals withdrawals = 4; // We dont use this
     
 }
 
 message BlockHeader{
     Hash32 parent_hash = 1;
-    Hash32 uncle_hash = 2;
+    // Hash32 uncle_hash = 2; // ??? there are uncles??
     Address coinbase_address = 3;
     Hash32 state_root = 4;
-    // Hash32 tx_hash = 5; // is calculated by the client (transactions)
-    // Hash32 receipt_hash = 6; // is calculated by the client (receipts)
+    //Hash32 transaction_root = 5; // ??? is calculated from data, but make sense to be calculated by the server?
+    //Hash32 receipts_root = 6; // ??? is calculated by the client (receipts)
     // string log_bloom = 7; // it can be generated using the receipts + logs (go-ethereum CreateBloom))
     // BigInt difficulty = 8; // unused field
     BigInt block_number = 9;
