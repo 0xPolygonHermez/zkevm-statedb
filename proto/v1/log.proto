@@ -5,6 +5,8 @@ package statedb.v1;
 
 import "common.proto";
 
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
 message Log {
     Hash32 tx_hash = 1; // tx that owns this log
     // ???? L2_block 

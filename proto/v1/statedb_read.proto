@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package statedb.v1;
 
-option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb";
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
 
 import public "block.proto";
 import public "common.proto";
@@ -40,14 +40,10 @@ service StateDbTransactionQueriesService {
 
 // StateDbAccountQueriesService is the service that provides the account queries to the state db
 service StateDbAccountQueriesService {
-    // GetBlanace returns the balance, it could from lastest or specific block
-    rpc GetBalance(AccountId) returns (GetBalanceResponse) {}
-    // GetNonce returns the nonce, it could from lastest or specific block
-    rpc GetNonce(AccountId) returns (BigInt) {}
-    // GetCode returns the code of the account, it could from lastest or specific block
-    rpc GetCode(AccountId) returns (GetCodeResponse) {}
     // GetStorageAt returns the value of the storage at position, it could from lastest or specific block
     rpc GetStorageAt(GetStorageAtRequest) returns (GetStorageAtResponse) {}
+    // GetstateLeaf returns nonce, balance and optionally code of an account, it could from lastest or specific block
+    rpc GetStateLeaf(GetStateLeafRequest) returns (GetStateLeafResponse) {}
 }
 
 
@@ -92,18 +88,25 @@ message GetBlockResponse {
     Block block = 1;
 }
 
-// ??? accountId is a bad name! improve it!
-message AccountId{
+// ??? StateLeafId is a bad name! improve it!
+message StateLeafId {
     Address address = 1;
     optional uint64 block_number = 2; // If not set is the last one
 }
 
-message GetCodeResponse {
-    bytes code = 1;
+message GetStateLeafRequest{
+    StateLeafId state_leaf_id = 1; 
+    bool include_code = 3;
+}
+
+message GetStateLeafResponse{
+    BigInt balance = 1;
+    BigInt nonce = 2;
+    bytes code = 4;  // ???? is the same 0 bytes that non return the code??
 }
 
 message GetStorageAtRequest{
-    AccountId address = 1;
+    StateLeafId state_leaf_id = 1;
     BigInt position  = 2;
 }
 

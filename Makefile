@@ -23,12 +23,17 @@ verify-proto-syntax: ## Verify proto syntax
 
 
 
-generate-code-from-proto: 
+generate-code: ## Generate code form proto
 	protoc  -I proto/v1/ proto/v1/statedb_read.proto  --python_out=/tmp/ --experimental_allow_proto3_optional
+	protoc  -I proto/v1/ proto/v1/statedb_read.proto  --cpp_out=/tmp/ --experimental_allow_proto3_optional 
+	protoc  -I proto/v1/ proto/v1/statedb_read.proto  --go_out=/tmp/ --experimental_allow_proto3_optional
 
-generate-code-from-proto-to-go: 
-	protoc  -I proto/v1/ proto/v1/statedb_read.proto  --python_out=/tmp/ --experimental_allow_proto3_optional
-
+generate-web-client: ## Generate web client (not working)
+	protoc  -I proto/v1/ \
+    --js_out=import_style=commonjs:. \
+    --grpc-web_out=import_style=commonjs,mode=grpcwebtext:. \
+	--experimental_allow_proto3_optional \
+    proto/v1/statedb_read.proto
 
 ## Help display.
 ## Pulls comments from beside commands and prints a nicely formatted

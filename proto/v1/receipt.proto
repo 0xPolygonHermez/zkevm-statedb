@@ -6,6 +6,9 @@ package statedb.v1;
 import "common.proto";
 import "log.proto";
 
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
+
 message Receipt { 
     uint32 type = 1;
     bytes post_state = 2; 
@@ -15,9 +18,6 @@ message Receipt {
     Address contract_address = 6;
     uint64 effective_gas_price = 7;
 }
-
-
-
 
 /* Example of Recepit in JSON
 {

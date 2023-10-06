@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package statedb.v1;
 
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
 // BigInt in proto
 message BigInt {
     bytes bigint = 1; // encoding.TextMarshaler

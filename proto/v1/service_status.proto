@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package statedb.v1;
 
-
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
 
 message ServiceStatus {
     // enum with the possible status of the server

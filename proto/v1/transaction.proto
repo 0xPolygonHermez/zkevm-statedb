@@ -4,8 +4,11 @@ syntax = "proto3";
 package statedb.v1;
 
 import public "common.proto";
-import public "receipt.proto";
 import public "log.proto";
+import public "receipt.proto";
+
+
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
 
 message Transaction {
     // Hash32 tx_hash = 1;  Calculated by hash of encoded
