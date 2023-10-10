@@ -1,0 +1,115 @@
+// Definition of read functions for the state db
+syntax = "proto3";
+
+package statedb.v1;
+
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
+import public "block.proto";
+import public "common.proto";
+import "google/protobuf/empty.proto";
+import public "service_status.proto";
+import public "transaction.proto";
+
+message Version {
+    string v0_0_1 = 1;    
+}
+service StateDbServiceQueriesService {
+    // GetStatus returns the status of the server
+    rpc GetStatus(google.protobuf.Empty) returns (GetStatusResponse) {}
+}
+
+// StateDbBlockQueriesService is the service that provides the block queries to the state db
+service StateDbBlockQueriesService {
+    // ?? it's needed? you could ask GetBlockByNumber without number and get the last block
+    rpc GetLastBlockNumber(google.protobuf.Empty) returns (GetLastBlockNumberResponse) {}
+    // GetBlockByHash returns the block with hash transactions, to get the transactions call GetTransactionsByXXXX
+    rpc GetBlockByHash(GetBlockByHashRequest) returns (GetBlockResponse) {}
+    // GetBlockByNumber returns the block with hash transactions, to get the transactions call GetTransactionsByXXXX
+    rpc GetBlockByNumber(GetBlockByNumberRequest) returns (GetBlockResponse) {}
+}
+
+// StateDbTransactionQueriesService is the service that provides the transactions, 
+//    receipts and logs queries to the state db
+service StateDbTransactionQueriesService {
+    // GetTransactionsByBlockNumber returns the transactions of a block could include receipts and logs
+    rpc GetTransactionsByBlockNumber(GetTransactionsByBlockNumberRequest) returns (GetTransactionsResponse) {}
+    // GetTransactionsByBlockHash returns the transactions of a block could include receipts and logs
+    rpc GetTransactionsByBlockHash(GetTransactionsByBlockHashRequest) returns (GetTransactionsResponse) {}
+}
+
+// StateDbAccountQueriesService is the service that provides the account queries to the state db
+service StateDbAccountQueriesService {
+    // GetStorageAt returns the value of the storage at position, it could from lastest or specific block
+    rpc GetStorageAt(GetStorageAtRequest) returns (GetStorageAtResponse) {}
+    // GetstateLeaf returns nonce, balance and optionally code of an account, it could from lastest or specific block
+    rpc GetStateLeaf(GetStateLeafRequest) returns (GetStateLeafResponse) {}
+}
+
+
+
+// GetStatusResponse response for a GetStatus request
+message GetStatusResponse {
+    ServiceStatus status = 1; // Status of the service
+}
+
+// GetTransactionByBlockRequest request for a GetTransactionByBlock request
+message GetTransactionsByBlockNumberRequest {
+    uint64 block_number = 1; // Block number requested
+    bool include_receipts = 2; // Include receipts in the response
+    bool include_logs   = 3; // Include logs in the response
+}
+
+message GetTransactionsByBlockHashRequest {
+    Hash32 hash = 1;  // Block number requested
+    bool include_receipts = 2; // Include receipts in the response
+    bool include_logs   = 3; // Include logs in the response
+}
+
+
+// GetTransactionResponse response for a GetTransactionXXXX request
+message GetTransactionsResponse {
+    repeated Transaction transactions = 1; // list of transactions 
+}
+
+message GetBlockByHashRequest {
+    Hash32 hash = 1;  // Block hash requested
+}
+
+message GetBlockByNumberRequest {
+    optional uint64 block_number = 1; // Block number requested, if not set is the last block
+}
+
+message GetLastBlockNumberResponse {
+    uint64 block_number = 1; // Last block number 
+}
+
+message GetBlockResponse {
+    Block block = 1;
+}
+
+// ??? StateLeafId is a bad name! improve it!
+message StateLeafId {
+    Address address = 1;
+    optional uint64 block_number = 2; // If not set is the last one
+}
+
+message GetStateLeafRequest{
+    StateLeafId state_leaf_id = 1; 
+    bool include_code = 3;
+}
+
+message GetStateLeafResponse{
+    BigInt balance = 1;
+    BigInt nonce = 2;
+    bytes code = 4;  // ???? is the same 0 bytes that non return the code??
+}
+
+message GetStorageAtRequest{
+    StateLeafId state_leaf_id = 1;
+    BigInt position  = 2;
+}
+
+message GetStorageAtResponse{
+    BigInt value = 1; // ??? Is a bigint or bytes?? 
+}

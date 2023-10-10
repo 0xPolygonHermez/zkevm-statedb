@@ -1,0 +1,18 @@
+// Messages related to Log entity
+syntax = "proto3";
+
+package statedb.v1;
+
+import "common.proto";
+
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
+message Log {
+    Hash32 tx_hash = 1; // tx that owns this log
+    // ???? L2_block 
+    int64 log_index = 2;
+    Address contract_address = 3;
+    bytes data = 4;
+    
+    repeated Hash32 topics = 5; // ??? maximum 4 topics? databse contains topic1, topic2, topic3 and topic4
+}

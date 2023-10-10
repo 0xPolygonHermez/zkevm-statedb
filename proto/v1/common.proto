@@ -1,0 +1,38 @@
+// Common stuff
+syntax = "proto3";
+
+package statedb.v1;
+
+option go_package = "github.com/0xPolygonHermez/zkevm-statedb/statedb/v1";
+
+// BigInt in proto
+message BigInt {
+    bytes bigint = 1; // encoding.TextMarshaler
+}
+
+
+message Address {
+    bytes address = 1; // len = 20
+}
+
+//  This type is a copy of procer/src/grpc/proto Fea
+//  How to work: merkletree/split.go
+//    func scalar2fea(value *big.Int) []uint64 {
+//    func h4ToScalar(h4 []uint64) *big.Int {
+/**
+ * @dev Array of 4 FE
+ * @param {fe0} - Field Element value for pos 0
+ * @param {fe1} - Field Element value for pos 1
+ * @param {fe2} - Field Element value for pos 2
+ * @param {fe3} - Field Element value for pos 3
+*/
+message Hash32 { // is a binary hash
+    uint64 fe0 = 1;
+    uint64 fe1 = 2;
+    uint64 fe2 = 3;
+    uint64 fe3 = 4;
+}
+
+message Nonce {
+    uint64 nonce = 1; // len = 8 (????? could be bigger)
+}
